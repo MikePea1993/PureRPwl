@@ -1,0 +1,178 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PureRP Whitelist Application</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #e0e0e0;
+            background-image: url('https://i.ibb.co/CzLDzq1/wp2614328.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            background-color: rgba(30, 30, 30, 0.9);
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            width: 100%;
+            max-width: 600px;
+            padding: 40px;
+        }
+        h1 {
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2em;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group:last-of-type {
+            margin-bottom: 40px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #ffffff;
+            font-weight: bold;
+        }
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #444;
+            border-radius: 4px;
+            font-size: 16px;
+            background-color: #2c2c2c;
+            color: #e0e0e0;
+            transition: border-color 0.3s;
+        }
+        input[type="text"]:focus, textarea:focus {
+            border-color: #ffffff;
+            outline: none;
+        }
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        .submit-container {
+            display: flex;
+            justify-content: center;
+        }
+        input[type="submit"] {
+            background-color: #4a4a4a;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        input[type="submit"]:hover {
+            background-color: #5a5a5a;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>PureRP Whitelist Application</h1>
+        <form id="applicationForm">
+            <div class="form-group">
+                <label for="discord">Discord ID / Username:</label>
+                <input type="text" id="discord" name="discord" required>
+            </div>
+            <div class="form-group">
+                <label for="age">Your Age:</label>
+                <input type="text" id="age" name="age" required>
+            </div>
+            <div class="form-group">
+                <label for="backstory">Backstory of your character:</label>
+                <textarea id="backstory" name="backstory" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="vods">Platforms or VODS of previous roleplay interactions:</label>
+                <textarea id="vods" name="vods" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="powergaming">Example of Powergaming:</label>
+                <textarea id="powergaming" name="powergaming" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="metagaming">Example of Metagaming:</label>
+                <textarea id="metagaming" name="metagaming" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="experience">Previous Role-play experience:</label>
+                <textarea id="experience" name="experience" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="rules">Have you read the rules?</label>
+                <input type="text" id="rules" name="rules" required>
+            </div>
+            <div class="submit-container">
+                <input type="submit" value="Submit Application">
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Set the start time when the page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            window.applicationStartTime = Math.floor(Date.now() / 1000);
+        });
+
+        document.getElementById('applicationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData.entries());
+            
+            // Send data to your server endpoint
+            fetch('/submit-application', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Application-Start-Time': window.applicationStartTime.toString()
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    alert('Thank you for your application! We will review it and get back to you soon.');
+                    // Optionally, reset the form here
+                    document.getElementById('applicationForm').reset();
+                } else {
+                    alert('There was an error submitting your application. Please try again.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('There was an error submitting your application. Please try again.');
+            });
+        });
+    </script>
+</body>
+</html>
+    
